@@ -52,12 +52,12 @@ JSON reports include answers, source metadata, evidence, rule checks and judge a
 
 Verified September 29, 2026 against Cloudflare's account-accessible model catalog and OpenRouter's models API:
 
-| Model | Input / million tokens | Output / million tokens | Cached input / million tokens |
-|---|---:|---:|---:|
-| Cloudflare GLM-5.3 Flash | $0.15 | $0.50 | $0.03 |
-| Cloudflare DeepSeek V4 Flash 0731 | $0.44 | $1.32 | $0.014 |
-| Cloudflare Qwen 3.8 27B | $0.45 | $3.20 | $0.05 |
-| OpenRouter Gemini 3.8 Flash | $0.75 | $3.75 | $0.075 |
+| Model                             | Input / million tokens | Output / million tokens | Cached input / million tokens |
+| --------------------------------- | ---------------------: | ----------------------: | ----------------------------: |
+| Cloudflare GLM-5.3 Flash          |                  $0.15 |                   $0.50 |                         $0.03 |
+| Cloudflare DeepSeek V4 Flash 0731 |                  $0.44 |                   $1.32 |                        $0.014 |
+| Cloudflare Qwen 3.8 27B           |                  $0.45 |                   $3.20 |                         $0.05 |
+| OpenRouter Gemini 3.8 Flash       |                  $0.75 |                   $3.75 |                        $0.075 |
 
 GLM and DeepSeek require Workers Paid or prepaid AI Gateway credits; paid inference succeeded in this account. GLM reasoning is mandatory: explicitly set `reasoning_effort: "low"` for this workload. Its default is `max`, and requesting `none` also normalizes to `max`. Both return OpenAI-style `choices[0].message.content` and `usage` when called through Workers AI.
 

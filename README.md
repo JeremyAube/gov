@@ -17,12 +17,12 @@ Canadian public-service question answering at **https://gov.buildcanada.com**. T
 
 Matches the durations disclosed by America.gov's September 29, 2026 privacy policy:
 
-| Data | Cloudflare KV retention |
-| --- | --- |
-| Search results and source excerpts | 2 hours (7,200 seconds) |
-| Completed answers and source metadata | 2 hours (7,200 seconds) |
-| Suggested follow-up questions | 30 days (2,592,000 seconds) |
-| Explicitly submitted feedback (answer and sources included) | 1 year |
+| Data                                                        | Cloudflare KV retention     |
+| ----------------------------------------------------------- | --------------------------- |
+| Search results and source excerpts                          | 2 hours (7,200 seconds)     |
+| Completed answers and source metadata                       | 2 hours (7,200 seconds)     |
+| Suggested follow-up questions                               | 30 days (2,592,000 seconds) |
+| Explicitly submitted feedback (answer and sources included) | 1 year                      |
 
 SHA-256 cache keys include relevant query/history, language, selected domains, jurisdiction context and registry/prompt/model versions. Answers also include the current date. Search caches are shared across answer-model comparisons; answer caches are model-specific. An embedded expiry is checked in addition to KV's TTL. Cache keys are hashed; cached answers/search text themselves are not encrypted by hashing the key.
 
@@ -52,6 +52,17 @@ npm test
 npm run check
 npm run dev
 ```
+
+Oxlint checks JavaScript in the Worker, browser client, scripts, and tests. Oxfmt formats source code, styles, HTML, configuration, and documentation. Both tools use `.gitignore` to skip generated files and local secrets; Oxfmt also skips `package-lock.json`. Their settings are in `.oxlintrc.json` and `.oxfmtrc.json`.
+
+```sh
+npm run lint          # Check lint rules
+npm run lint:fix      # Apply safe lint fixes
+npm run format       # Format files
+npm run format:check # Check formatting without changes
+```
+
+`npm run check` runs lint and format checks before the build and Worker dry run. CI uses the same command.
 
 Use Node.js 22 (`nvm use`). Copy `.dev.vars.example` to the ignored `.dev.vars` file and fill in your local credentials. Production secrets are Worker secrets:
 
@@ -93,7 +104,7 @@ Private document conversations and responses containing recognized identifiers h
 
 Repository: https://github.com/BuildCanada/gov
 
-GitHub Actions installs locked dependencies with `npm ci`, runs the tests, builds the browser assets, and validates the Worker using `wrangler deploy --dry-run`. These checks run on pull requests and pushes to `main`. Deployment follows successful checks on `main`; a manual run on `main` also deploys. Pull requests cannot run the deployment job. Actions are pinned to commit SHAs.
+GitHub Actions installs locked dependencies with `npm ci`, runs the tests, checks lint and formatting, builds the browser assets, and validates the Worker using `wrangler deploy --dry-run`. These checks run on pull requests and pushes to `main`. Deployment follows successful checks on `main`; a manual run on `main` also deploys. Pull requests cannot run the deployment job. Actions are pinned to commit SHAs.
 
 Configure the repository secret `CLOUDFLARE_API_TOKEN` with a dedicated Cloudflare **Edit Cloudflare Workers** API token restricted to the Build Canada account and relevant zone permissions for `buildcanada.com`. The account ID, Worker name, domain and existing KV binding are in `wrangler.jsonc`. A fork needs its own bindings and deployment configuration.
 

@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   check:
-    name: Test and build
+    name: Lint, format, test and build
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -24,7 +24,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
-      - name: Build frontend and validate Worker bundle
+      - name: Lint, check formatting, build frontend and validate Worker bundle
         run: npm run check
 
   deploy:

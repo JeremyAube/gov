@@ -9,23 +9,23 @@
   "routes": [
     {
       "pattern": "gov.buildcanada.com",
-      "custom_domain": true
-    }
+      "custom_domain": true,
+    },
   ],
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": true,
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
   },
   "ai": {
-    "binding": "AI"
+    "binding": "AI",
   },
   "kv_namespaces": [
     {
       "binding": "CACHE",
-      "id": "c3b4cd7b7708444bb38b240fe7dc4ce9"
-    }
+      "id": "c3b4cd7b7708444bb38b240fe7dc4ce9",
+    },
   ],
   "ratelimits": [
     {
@@ -33,18 +33,18 @@
       "namespace_id": "1009",
       "simple": {
         "limit": 12,
-        "period": 60
-      }
-    }
+        "period": 60,
+      },
+    },
   ],
   "vars": {
     "MODEL_PROVIDER": "openrouter",
     "MODEL": "google/gemini-3.8-flash",
     "ANSWER_TTL_SECONDS": "7200",
     "SEARCH_TTL_SECONDS": "7200",
-    "FOLLOWUP_TTL_SECONDS": "2592000"
+    "FOLLOWUP_TTL_SECONDS": "2592000",
   },
   "observability": {
-    "enabled": false
-  }
+    "enabled": false,
+  },
 }

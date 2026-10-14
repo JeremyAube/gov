@@ -7,12 +7,18 @@
     "build": "node scripts/build.mjs",
     "dev": "npm run build && wrangler dev",
     "test": "node --test test/*.test.js",
-    "check": "npm run build && wrangler deploy --dry-run",
+    "lint": "oxlint --deny-warnings --ignore-path .gitignore .",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "check": "npm run lint && npm run format:check && npm run build && wrangler deploy --dry-run",
     "deploy": "npm run build && wrangler deploy",
     "eval": "node scripts/eval.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",
+    "oxfmt": "^0.73.0",
+    "oxlint": "^1.88.0",
     "wrangler": "^4.134.0"
   },
   "dependencies": {

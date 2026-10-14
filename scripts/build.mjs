@@ -2,8 +2,13 @@ import { build } from 'esbuild';
 import { cp, rm } from 'node:fs/promises';
 await rm('public/chunks', { recursive: true, force: true });
 await build({
-  entryPoints: { app: 'src/client.js' }, bundle: true, minify: true,
-  format: 'esm', splitting: true, target: 'es2022', outdir: 'public',
+  entryPoints: { app: 'src/client.js' },
+  bundle: true,
+  minify: true,
+  format: 'esm',
+  splitting: true,
+  target: 'es2022',
+  outdir: 'public',
   chunkNames: 'chunks/[name]-[hash]',
 });
 await cp('node_modules/pdfjs-dist/build/pdf.worker.min.mjs', 'public/pdf.worker.min.mjs');

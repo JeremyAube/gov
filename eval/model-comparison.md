@@ -8,12 +8,12 @@ Evaluated September 29, 2026 against the deployed protected `/api/eval` endpoint
 
 Prices are USD per million tokens, verified against Cloudflare's account-accessible catalog and OpenRouter's public models API.
 
-| Model | Input | Output | Cached input | Tested |
-|---|---:|---:|---:|---|
-| Workers AI `@cf/zai-org/glm-5.3-flash` | $0.15 | $0.50 | $0.03 | 26 live-retrieval questions |
-| Workers AI `@cf/deepseek-ai/deepseek-v4-flash-0731` | $0.44 | $1.32 | $0.014 | 12 hard questions with replayed source packets |
-| Workers AI `@cf/qwen/qwen3.8-27b` | $0.45 | $3.20 | $0.05 | Catalog/schema verification only |
-| OpenRouter `google/gemini-3.8-flash` | $0.75 | $3.75 | $0.075 | 26 live-retrieval questions and 12 controlled replays |
+| Model                                               | Input | Output | Cached input | Tested                                                |
+| --------------------------------------------------- | ----: | -----: | -----------: | ----------------------------------------------------- |
+| Workers AI `@cf/zai-org/glm-5.3-flash`              | $0.15 |  $0.50 |        $0.03 | 26 live-retrieval questions                           |
+| Workers AI `@cf/deepseek-ai/deepseek-v4-flash-0731` | $0.44 |  $1.32 |       $0.014 | 12 hard questions with replayed source packets        |
+| Workers AI `@cf/qwen/qwen3.8-27b`                   | $0.45 |  $3.20 |        $0.05 | Catalog/schema verification only                      |
+| OpenRouter `google/gemini-3.8-flash`                | $0.75 |  $3.75 |       $0.075 | 26 live-retrieval questions and 12 controlled replays |
 
 The native Cloudflare model IDs are Cloudflare-hosted Workers AI models. GLM and DeepSeek paid inference succeeded in the account. GLM's reasoning cannot be disabled; `reasoning_effort: "low"` must be explicit, because `none` normalizes to `max`. Prices and reasoning token consumption both matter.
 
@@ -23,16 +23,16 @@ Sources: [Cloudflare pricing](https://developers.cloudflare.com/workers-ai/platf
 
 The suite spans all provinces/territories, federal benefits/passports/immigration/taxes, local business/building services, English/French, explicit locations overriding IP location, missing jurisdiction, scope refusal, whitelist bypass, and adversarial/missing-evidence fixtures.
 
-| Result | GLM-5.3 Flash | Gemini 3.8 Flash |
-|---|---:|---:|
-| Completed answers | 26/26 | 24/26 |
-| Application rule checks | 26/26 completed | 24/24 completed |
-| Answer assessments meeting the quality rubric | 22/26 | 24/24 completed |
-| Strict passes including judge quote validation | 16/26 | 22/24 completed |
-| Judge quote-validation warnings | 6 | 2 |
-| Median end-to-end latency | 11.825 s | 11.439 s |
-| p95 end-to-end latency | 21.158 s | 24.470 s |
-| Recorded answer-model cost | $0.033434 | $0.174271 |
+| Result                                         |   GLM-5.3 Flash | Gemini 3.8 Flash |
+| ---------------------------------------------- | --------------: | ---------------: |
+| Completed answers                              |           26/26 |            24/26 |
+| Application rule checks                        | 26/26 completed |  24/24 completed |
+| Answer assessments meeting the quality rubric  |           22/26 |  24/24 completed |
+| Strict passes including judge quote validation |           16/26 |  22/24 completed |
+| Judge quote-validation warnings                |               6 |                2 |
+| Median end-to-end latency                      |        11.825 s |         11.439 s |
+| p95 end-to-end latency                         |        21.158 s |         24.470 s |
+| Recorded answer-model cost                     |       $0.033434 |        $0.174271 |
 
 The two full runs started concurrently. Only 18 of 24 successful pairs had identical evidence packets; six cold-search results differed. Consequently this table is a product evaluation, **not a fully controlled model ranking**. Latency includes search/link checks on cache misses. Search cache credits and judge costs are separate. Recorded model costs exclude unsuccessful calls whose usage was not returned.
 
@@ -40,7 +40,7 @@ A Gemini judge evaluated actual evidence excerpts and consequential claims. It i
 
 ### Actionable GLM failures
 
-- **Passport renewal:** reversed an online eligibility condition. The source says passports expiring in *more than* six months cannot renew online; the answer claimed online renewal was only for that group and generalized that valid passports cannot renew online. Manually verified against the supplied source packet.
+- **Passport renewal:** reversed an online eligibility condition. The source says passports expiring in _more than_ six months cannot renew online; the answer claimed online renewal was only for that group and generalized that valid passports cannot renew online. Manually verified against the supplied source packet.
 - **Winnipeg tenancy:** copied the toll-free number as `1-800-782-8406`; the source gives `1-800-782-8403`.
 - **CPP/QPP coordination:** asserted that having worked in Quebec means applying to Retraite Québec, without preserving the residence-dependent application rule.
 - **Minimal EI evidence fixture:** ignored the malicious source instruction, but added application/processing details absent from the one-sentence legitimate source. Injection resistance and factual source faithfulness are separate properties.
@@ -53,15 +53,15 @@ Twelve hard questions replayed the same previously retrieved official excerpts t
 
 Canonical deduplication removed some `www` aliases from saved packets. Although four expected-versus-replayed packet hashes changed, both candidates received the same actual normalized packets. After legitimate retries, all ten comparable successful non-adversarial DeepSeek/Gemini pairs have identical actual evidence fingerprints; the adversarial EI fixture is shared separately.
 
-| Result | DeepSeek V4 Flash | Gemini 3.8 Flash |
-|---|---:|---:|
-| Initial completed answers | 11/12 | 10/12 |
-| Completed after format-fix retries | Not retried | 12/12 |
-| Answer assessments meeting rubric | 9/11 completed | 12/12 after retries |
-| Strict passes including judge quote validation | 7/11 completed | 10/12 after retries |
-| Median latency, no search | 18.292 s | 4.634 s after retries |
-| p95 latency, no search | 55.289 s | 6.803 s after retries |
-| Recorded cost on ten matched non-adversarial successful pairs | $0.057840 | $0.082175 |
+| Result                                                        | DeepSeek V4 Flash |      Gemini 3.8 Flash |
+| ------------------------------------------------------------- | ----------------: | --------------------: |
+| Initial completed answers                                     |             11/12 |                 10/12 |
+| Completed after format-fix retries                            |       Not retried |                 12/12 |
+| Answer assessments meeting rubric                             |    9/11 completed |   12/12 after retries |
+| Strict passes including judge quote validation                |    7/11 completed |   10/12 after retries |
+| Median latency, no search                                     |          18.292 s | 4.634 s after retries |
+| p95 latency, no search                                        |          55.289 s | 6.803 s after retries |
+| Recorded cost on ten matched non-adversarial successful pairs |         $0.057840 |             $0.082175 |
 
 DeepSeek's cost was approximately 30% lower on those matched pairs. This saving did not compensate for the observed quality and latency differences for the initial product.
 

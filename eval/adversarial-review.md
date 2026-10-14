@@ -47,7 +47,6 @@ Candidate: live `gov.buildcanada.com`, deployment `a9f5444b`. Independent code a
 
 No real personal files, credentials or sensitive user data were submitted. No feedback was sent. Protected eval token was not read. No browser-network interception or OS motion preference changes were used. Mobile means responsive desktop browser viewport; native iOS keyboard behavior was not tested. Findings above should be rechecked after the next deployment.
 
-
 ## Focused fix verification — 2026-09-30
 
 Deployment `8f6de354-bc37-4cbc-b090-4bfeab044fe2`: all three actionable findings are closed. No new blocking regression was observed in this focused pass.
