@@ -2,6 +2,7 @@ node_modules/
 .wrangler/
 .dev.vars*
 .secrets.json
+wrangler.private.jsonc
 public/app.js
 public/app.js.map
 eval/results/

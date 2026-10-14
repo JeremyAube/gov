@@ -1,0 +1,40 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "buildcanada-gov-private-dev",
+  "main": "src/index.js",
+  "account_id": "YOUR_CLOUDFLARE_ACCOUNT_ID",
+  "compatibility_date": "2026-09-29",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "not_found_handling": "single-page-application"
+  },
+  "ai": {
+    "binding": "AI",
+    "remote": true
+  },
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "local-cache"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "RATE_LIMITER",
+      "namespace_id": "1009",
+      "simple": {
+        "limit": 12,
+        "period": 60
+      }
+    }
+  ],
+  "vars": {
+    "MODEL_PROVIDER": "cloudflare",
+    "MODEL": "@cf/zai-org/glm-5.3-flash",
+    "ANSWER_TTL_SECONDS": "7200",
+    "SEARCH_TTL_SECONDS": "7200",
+    "FOLLOWUP_TTL_SECONDS": "2592000"
+  }
+}

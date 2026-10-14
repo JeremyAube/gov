@@ -6,7 +6,7 @@ The suite avoids hardcoded fees or processing deadlines that can go stale. Its e
 
 ## Run
 
-From `gov/`, with Node 22 or newer:
+From `gov/`, with Node.js 24 LTS or newer:
 
 ```sh
 node scripts/eval.mjs --base https://gov.buildcanada.com --model @cf/zai-org/glm-5.3-flash --provider cloudflare --judge --out eval/results/glm.json

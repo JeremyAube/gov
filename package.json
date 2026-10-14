@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "dev": "npm run build && wrangler dev",
+    "dev": "npm run build && wrangler dev --config wrangler.local.jsonc",
+    "dev:cloudflare": "npm run build && wrangler dev --config wrangler.private.jsonc",
     "test": "node --test test/*.test.js",
     "check": "npm run build && wrangler deploy --dry-run",
     "deploy": "npm run build && wrangler deploy",
@@ -23,6 +24,6 @@
     "url": "https://github.com/BuildCanada/gov.git"
   },
   "engines": {
-    "node": ">=22.13.0"
+    "node": ">=24.0.0"
   }
 }

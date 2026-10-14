@@ -46,20 +46,44 @@ Only after Send does the extracted text go to the Cloudflare Worker and answer m
 
 ## Development
 
+### Local setup with OpenRouter
+
+Requirements: Node.js 22 LTS and npm. If you use nvm, run `nvm use` from the project folder.
+
 ```sh
 npm ci
+cp .dev.vars.example .dev.vars
+```
+
+Add `TAVILY_API_KEY` and `OPENROUTER_API_KEY` to `.dev.vars`. You need Tavily for search and OpenRouter for answers. `EVAL_TOKEN` is optional for normal local use.
+
+```sh
 npm test
 npm run check
 npm run dev
 ```
 
-Use Node.js 22 (`nvm use`). Copy `.dev.vars.example` to the ignored `.dev.vars` file and fill in your local credentials. Production secrets are Worker secrets:
+Open <http://localhost:8787>. Tests do not need API keys. `npm run dev` uses `wrangler.local.jsonc`: KV and rate limits run locally, and it uses OpenRouter. It does not need a Cloudflare login or access to the Build Canada account.
+
+### Local setup with your own Cloudflare Workers AI account
+
+To use Workers AI instead of OpenRouter, copy `wrangler.private.example.jsonc` to the ignored `wrangler.private.jsonc`. Set `account_id` to your Cloudflare account ID (`npx wrangler whoami` shows it). Then run:
+
+```sh
+npm run dev:cloudflare
+```
+
+This config uses your Cloudflare account for Workers AI. KV and rate limits stay local. Your account must have access to Workers AI. This does not change the production config or deploy the app. You still need `TAVILY_API_KEY` in `.dev.vars`; you do not need `OPENROUTER_API_KEY` for this provider. Never commit `wrangler.private.jsonc` or `.dev.vars`.
+
+### Production deployment and evaluation
+
+Production uses `wrangler.jsonc` and its configured Cloudflare account, domain and bindings. Production secrets are Worker secrets:
 
 - `TAVILY_API_KEY`
-- `OPENROUTER_API_KEY` (required for OpenRouter serving or comparisons; not needed for native Workers AI)
-- `EVAL_TOKEN` (private synthetic eval endpoint authorization)
+- `OPENROUTER_API_KEY` (needed when serving through OpenRouter; not needed for native Workers AI)
+- `EVAL_TOKEN` (authorization for the private synthetic eval endpoint)
 
-Never commit credentials. Existing local `.secrets.json` and `.dev.vars` are ignored and permission restricted. `wrangler secret bulk .secrets.json` uploads secrets without including them in configuration/static assets. The evaluator reads local secrets without printing them.
+Never commit credentials. `.dev.vars` and `.secrets.json` are ignored. `wrangler secret bulk .secrets.json` uploads secrets without adding them to configuration or static assets. The evaluator reads local secrets without printing them.
 
 ```sh
 npm run deploy
@@ -67,7 +91,7 @@ node scripts/eval.mjs --base https://gov.buildcanada.com \
   --provider cloudflare --model @cf/zai-org/glm-5.3-flash --judge
 ```
 
-Read [eval/README.md](eval/README.md) for case selection, provider comparisons, actual source-evidence judging and report interpretation. Rule-check success must not be reported as answer-quality success.
+Read [eval/README.md](eval/README.md) for case selection, provider comparisons, source-evidence judging and report interpretation. Rule-check success is not the same as answer-quality success.
 
 ## HTTP API
 
